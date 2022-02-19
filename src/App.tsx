@@ -27,7 +27,18 @@ function App() {
         method: "eth_requestAccounts",
       });
       setAccount(accounts[0]);
-      console.log("metamask -> account obtained: ", accounts[0]);
+      console.log("window.ethereum.request -> account obtained: ", accounts[0]);
+    }
+  };
+
+  const web3getAccounts = async () => {
+    if (isMetaMaskAvailable) {
+      try {
+        const accounts = await web3.eth.getAccounts();
+        console.log("metamask getAccounts -> accounts: ", accounts);
+      } catch (error) {
+        console.log("metamask getAccounts -> error: ", error);
+      }
     }
   };
 
@@ -49,20 +60,27 @@ function App() {
         <h1 className="font-sans text-3xl text-gray-500 font-bold mt-2">
           NFT SITE
         </h1>
-        <div className="flex flex-col items-center justify-center p-8 mt-8">
+        <div className="flex flex-col items-center justify-center p-8 mt-8 space-y-4">
           <button
-            onClick={testWeb3}
-            className="bg-green-300 hover:bg-green-400 hover:shadow-lg hover:text-white text-gray-500 font-bold py-2 px-4 rounded"
-          >
-            Test Web3.js
-          </button>
-          <button
-            onClick={connectWallet}
+            onClick={() => connectWallet()}
             disabled={!isMetaMaskAvailable}
             className="bg-green-300 hover:bg-green-400 hover:shadow-lg hover:text-white text-gray-500 font-bold py-2 px-4 rounded"
           >
             Connect Wallet
           </button>
+          <button
+            onClick={() => web3getAccounts()}
+            className="bg-green-300 hover:bg-green-400 hover:shadow-lg hover:text-white text-gray-500 font-bold py-2 px-4 rounded"
+          >
+            Web3 getAccounts
+          </button>
+          <button
+            onClick={() => testWeb3()}
+            className="bg-green-300 hover:bg-green-400 hover:shadow-lg hover:text-white text-gray-500 font-bold py-2 px-4 rounded"
+          >
+            Test Web3.js
+          </button>
+
           <div className="flex flex-col items-center p-4 mt-4">
             <span className="text-gray-500 font-bold">Connected account</span>
             <span>{account}</span>
