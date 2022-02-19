@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { createAlchemyWeb3 } from "@alch/alchemy-web3";
+
+// Using HTTPS
+const web3 = createAlchemyWeb3(process.env.REACT_APP_ALCHEMY_API_URL || "");
 
 declare global {
   interface Window {
@@ -8,7 +12,7 @@ declare global {
 
 function App() {
   const [isMetaMaskAvailable, setMetaMaskAvailable] = useState(false);
-  const [account, setAccount] = useState('');
+  const [account, setAccount] = useState("");
 
   useEffect(() => {
     if (typeof window.ethereum !== "undefined") {
@@ -27,6 +31,12 @@ function App() {
     }
   };
 
+  const testWeb3 = async () => {
+    web3.eth.getBlock("latest").then((block) => {
+      console.log("block: ", block);
+    });
+  };
+
   return (
     <div className="h-screen flex flex-grow flex-col items-center justify-center bg-teal-400">
       <div className="flex flex-col w-5/12 items-center justify-center p-12 border shadow-lg border-gray-400 rounded-lg bg-white">
@@ -36,8 +46,16 @@ function App() {
           alt="nft logo"
           src="https://upload.wikimedia.org/wikipedia/commons/2/24/NFT_Icon.png"
         ></img>
-        <h1 className="font-sans text-3xl text-gray-500 font-bold mt-2">NFT SITE</h1>
+        <h1 className="font-sans text-3xl text-gray-500 font-bold mt-2">
+          NFT SITE
+        </h1>
         <div className="flex flex-col items-center justify-center p-8 mt-8">
+          <button
+            onClick={testWeb3}
+            className="bg-green-300 hover:bg-green-400 hover:shadow-lg hover:text-white text-gray-500 font-bold py-2 px-4 rounded"
+          >
+            Test Web3.js
+          </button>
           <button
             onClick={connectWallet}
             disabled={!isMetaMaskAvailable}
