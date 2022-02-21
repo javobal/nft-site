@@ -20,7 +20,10 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test"
+    "test": "craco test",
+    "deploy": "hardhat run scripts/deploy.js --network ropsten",
+    "mint": "node scripts/mint-nft.js",
+    "compile": "rm -rf ./artifacts && hardhat compile"
   },
   "eslintConfig": {
     "extends": [

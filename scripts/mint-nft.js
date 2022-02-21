@@ -3,11 +3,12 @@ const API_URL = process.env.API_URL;
 const PUBLIC_KEY = process.env.PUBLIC_KEY;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 
+
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3(API_URL);
 
 const contract = require("../artifacts/contracts/Rentic.sol/Rentic.json");
-const contractAddress = "0x2fcd32Deba6Be93dD800Ecacb0aAdd897dB7bfbB";
+const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 const nftContract = new web3.eth.Contract(contract.abi, contractAddress);
 
 async function mintNFT(tokenURI) {
@@ -20,7 +21,7 @@ async function mintNFT(tokenURI) {
     'nonce': nonce,
     'gas': 500000,
     'maxPriorityFeePerGas': 2999999987,
-    'data': nftContract.methods.safeMint(PUBLIC_KEY).encodeABI()
+    'data': nftContract.methods.safeMint(PUBLIC_KEY, tokenURI).encodeABI()
   };
 
   const signedTx = await web3.eth.accounts.signTransaction(tx, PRIVATE_KEY);
@@ -29,4 +30,6 @@ async function mintNFT(tokenURI) {
   console.log(`Transaction receipt: ${JSON.stringify(transactionReceipt)}`);
 }
 
-mintNFT();
+//mintNFT("https://gateway.pinata.cloud/ipfs/QmeuTvH25KNu7TZYVU2LTtXwWyRkxgZY4R1Jw1x46o8haE");
+//mintNFT("https://gateway.pinata.cloud/ipfs/QmQoSjLYocPhAFda6Wuzu6xvLo938vqcXyyCMzSwyP1j6t");
+//mintNFT("https://gateway.pinata.cloud/ipfs/QmReVEWFK2cHLvDHmHUwCTBiuDtDc5s32Udph2VqrhJSsS");
