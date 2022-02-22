@@ -107,20 +107,12 @@ function App() {
     try {
       // request signed message
       const message = "Hello Rentic Team Member!";
-      const signature = await web3.eth.personal.sign(
-        message,
-        account,
-        "test password"
-      );
-      console.log("signature: ", signature);
+      const signature = await web3.eth.personal.sign(message, account, "");
       // verify signature
-      const signingAccount = await web3.eth.personal.ecRecover(
-        message,
-        signature
-      );
+      const signer = web3.eth.accounts.recover(message, signature);
 
-      console.log("isValid: ", signingAccount === account);
-      setValidity(signingAccount === account);
+      console.log("isValid: ", signer === account);
+      setValidity(signer === account);
     } catch (error) {
       console.log("validateOwnership -> error: ", error);
     }
